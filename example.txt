@@ -1,0 +1,7 @@
+
+To create a project with set cpu speed and type, will try to figure 
+out chip settings from what is set in the cmake command. 
+
+Example:
+
+$ cmake ../ -DF_CPU:STRING=8000000 -DMCU:STRING=atmega328p
