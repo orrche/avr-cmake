@@ -33,11 +33,11 @@ SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
 SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
 
-SET(CSTANDARD "-std=gnu99") 
-SET(CDEBUG "-gstabs") 
-SET(CWARN "-Wall -Wstrict-prototypes") 
-SET(CTUNING "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums") 
-SET(COPT "-Os") 
+SET(CSTANDARD "") 
+SET(CDEBUG "")
+SET(CWARN "") 
+SET(CTUNING "") 
+SET(COPT "-O3") 
 SET(CMCU "-mmcu=${MCU}") 
 SET(CDEFS "-DF_CPU=${F_CPU}") 
 
@@ -52,15 +52,16 @@ set(CMAKE_EXE_LINKER_FLAGS "")
 
 set(TARGET_ELF ${PROJECT_NAME}.elf)
 
+set(FORMAT "ihex")
 
 #| Convert the .ELF into a .HEX to load onto the Teensy
 set( TARGET_HEX ${PROJECT_NAME}.hex )
-add_custom_target( ${TARGET_HEX} ${AVR_OBJCOPY} ${HEX_FLAGS} ${TARGET_ELF} ${TARGET_HEX}
+add_custom_target( ${TARGET_HEX} ${AVR_OBJCOPY} -v -j.data -j.text -O${FORMAT} ${TARGET_ELF} ${TARGET_HEX}
+	DEPENDS ${TARGET_ELF}
 	COMMENT "Creating load file for Flash:  ${TARGET_HEX}"
 )
 
 
-set(FORMAT "ihex")
 
 #| After Changes Size Information
 add_custom_target( SizeAfter ${AVR_SIZE_TOOL} --target=${FORMAT} ${TARGET_HEX} ${TARGET_ELF}
